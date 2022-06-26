@@ -15,6 +15,8 @@ abstract class BaseConfigPlugin : Plugin<Project> {
 
     protected abstract val pluginType: PluginType
 
+    protected open fun BaseExtension.android() {}
+
     @Suppress("UnstableApiUsage")
     protected open fun DependencyHandlerScope.dependencies(libs: VersionCatalog) {
     }
@@ -38,6 +40,8 @@ abstract class BaseConfigPlugin : Plugin<Project> {
                 sourceCompatibility = JavaVersion.VERSION_11
                 targetCompatibility = JavaVersion.VERSION_11
             }
+
+            android()
         }
 
         @Suppress("UnstableApiUsage")

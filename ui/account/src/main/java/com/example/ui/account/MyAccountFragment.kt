@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.ui.account.databinding.FragmentMyAccountBinding
+import com.example.ui_core.viewbinding.viewBinding
 
 class MyAccountFragment : Fragment(R.layout.fragment_my_account) {
+
+    private val binding by viewBinding(FragmentMyAccountBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<View>(R.id.back_button).setOnClickListener {
+        binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
     }
