@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ui.home.HomePageFragment">
+
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+
+        <deepLink app:uri="@string/nav_deeplink_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.ui.home.details.DeviceSteeringFragment">
+
+        <deepLink app:uri="@string/nav_deeplink_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.ui.account.MyAccountFragment">
+
+        <deepLink app:uri="@string/nav_deeplink_account" />
+    </fragment>
+</navigation>

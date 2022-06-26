@@ -20,6 +20,10 @@ gradlePlugin {
             id = "app-config-plugin"
             implementationClass = "plugin.AppConfigPlugin"
         }
+        register("ui-config-plugin") {
+            id = "ui-config-plugin"
+            implementationClass = "plugin.UiConfigPlugin"
+        }
         register("lib-config-plugin") {
             id = "lib-config-plugin"
             implementationClass = "plugin.LibConfigPlugin"

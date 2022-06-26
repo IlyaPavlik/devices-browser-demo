@@ -23,5 +23,6 @@ rootProject.name = "DeviceBrowser"
 include(":app")
 include(":feature:device")
 include(":feature:user")
+include(":feature:navigation")
 include(":ui:home")
 include(":ui:account")

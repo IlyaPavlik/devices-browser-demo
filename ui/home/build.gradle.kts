@@ -1,3 +1,7 @@
 plugins {
-    id("lib-config-plugin")
+    id("ui-config-plugin")
+}
+
+dependencies {
+    implementation(project(mapOf("path" to ":feature:navigation")))
 }

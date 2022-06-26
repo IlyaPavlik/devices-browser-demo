@@ -22,6 +22,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.navigation.ui)
-    implementation(libs.androidx.navigation.fragment)
+
+    implementation(project(mapOf("path" to ":ui:home")))
+    implementation(project(mapOf("path" to ":ui:account")))
+    implementation(project(mapOf("path" to ":feature:navigation")))
 }
