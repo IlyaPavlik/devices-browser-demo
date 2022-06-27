@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.6.10"
 kotlinCoroutines = "1.6.3"
-hilt = "2.38.1"
+hilt = "2.42"
 navigation = "2.4.2"
 junit = "4.13.2"
 
@@ -11,6 +11,16 @@ androidx-appcompat = "androidx.appcompat:appcompat:1.4.2"
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+jackson = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
+
+timber = "com.jakewharton.timber:timber:5.0.1"
+
 junit = { module = "junit:junit", version.ref = "junit" }
+mockk = "io.mockk:mockk:1.12.4"
 
 [bundles]

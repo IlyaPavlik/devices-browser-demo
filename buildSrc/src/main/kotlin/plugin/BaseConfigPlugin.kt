@@ -25,6 +25,8 @@ abstract class BaseConfigPlugin : Plugin<Project> {
         target.plugins.apply {
             apply(pluginType.id)
             apply("kotlin-android")
+            apply("kotlin-kapt")
+            apply("dagger.hilt.android.plugin")
         }
 
         target.extensions.getByType<BaseExtension>().run {
@@ -49,7 +51,13 @@ abstract class BaseConfigPlugin : Plugin<Project> {
             val libs = target.extensions.getByType<VersionCatalogsExtension>().named("libs")
 
             add("implementation", libs.findDependency("androidx.core").get())
-            add("androidTestImplementation", libs.findDependency("junit").get())
+            add("implementation", libs.findDependency("hilt").get())
+            add("kapt", libs.findDependency("hilt.compiler").get())
+            add("implementation", libs.findDependency("coroutines").get())
+            add("implementation", libs.findDependency("timber").get())
+            add("testImplementation", libs.findDependency("junit").get())
+            add("testImplementation", libs.findDependency("mockk").get())
+            add("testImplementation", libs.findDependency("coroutines.test").get())
 
             dependencies(libs)
         }

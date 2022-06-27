@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,24 +7,21 @@
     tools:context=".HomePageFragment">
 
     <TextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Error text" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/device_recycle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Home fragment" />
+        android:layout_height="match_parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/device_details_button"
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:text="Device details" />
+        android:layout_gravity="center" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/my_account_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:text="My account details" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>
