@@ -20,7 +20,12 @@ class HomePageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = ComposeView(requireContext()).apply {
-        setContent { HomePageScreen(onDeviceClick = ::onDeviceClick) }
+        setContent {
+            HomePageScreen(
+                onDeviceClick = ::onDeviceClick,
+                onUserClick = ::onUserClick
+            )
+        }
     }
 
     private fun onDeviceClick(device: Device) {
@@ -29,6 +34,13 @@ class HomePageFragment : Fragment() {
             .toUri()
         val request = NavDeepLinkRequest.Builder
             .fromUri(uri)
+            .build()
+        findNavController().navigate(request)
+    }
+
+    private fun onUserClick() {
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(getString(RNavigation.string.nav_deeplink_account).toUri())
             .build()
         findNavController().navigate(request)
     }

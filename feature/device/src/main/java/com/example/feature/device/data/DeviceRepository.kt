@@ -33,8 +33,8 @@ class DeviceRepository @Inject constructor(
         }
     }
 
-    private suspend fun loadSavedDevices(): List<Device> {
-        return savedDataApi.getSavedDevices().map { it.toDevice() }
+    private suspend fun loadSavedDevices() {
+        savedDataApi.getSavedDevices().map { it.toDevice() }
             .also { devices -> _devices.value = devices.associateBy { it.id } }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,12 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feature.device.data.model.Device
+import com.example.feature.user.model.User
 import com.example.uicore.compose.DeviceBrowserTheme
 
 @Composable
 internal fun HomePageScreen(
     viewModel: HomePageViewModel = viewModel(),
-    onDeviceClick: (Device) -> Unit
+    onDeviceClick: (Device) -> Unit,
+    onUserClick: () -> Unit
 ) {
     val state = viewModel.homePageState.collectAsState()
 
@@ -33,7 +36,8 @@ internal fun HomePageScreen(
         state = state.value,
         onFilterSelect = viewModel::onFilterSelected,
         onDeviceClick = onDeviceClick,
-        onDeleteClick = viewModel::onDeleteClick
+        onDeleteClick = viewModel::onDeleteClick,
+        onUserClick = onUserClick,
     )
 }
 
@@ -42,17 +46,18 @@ private fun Content(
     state: HomePageState,
     onFilterSelect: (FilterDeviceType) -> Unit,
     onDeviceClick: (Device) -> Unit,
-    onDeleteClick: (Device) -> Unit
+    onDeleteClick: (Device) -> Unit,
+    onUserClick: () -> Unit,
 ) {
     DeviceBrowserTheme {
         when (state) {
             is HomePageState.Content ->
-                DeviceList(
-                    filter = state.filter,
-                    devices = state.devices,
+                ContentDetails(
+                    details = state,
                     onFilterSelect = onFilterSelect,
                     onItemClick = onDeviceClick,
-                    onDeleteClick = onDeleteClick
+                    onDeleteClick = onDeleteClick,
+                    onUserClick = onUserClick
                 )
             is HomePageState.Error -> Error()
             is HomePageState.Loading -> Loading()
@@ -61,24 +66,53 @@ private fun Content(
 }
 
 @Composable
-private fun DeviceList(
-    filter: FilterDeviceType,
-    devices: List<Device>,
+private fun ContentDetails(
+    details: HomePageState.Content,
     onFilterSelect: (FilterDeviceType) -> Unit,
     onItemClick: (Device) -> Unit,
-    onDeleteClick: (Device) -> Unit
+    onDeleteClick: (Device) -> Unit,
+    onUserClick: () -> Unit
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
+        if (details.user != null) {
+            item {
+                UserDetails(
+                    user = details.user,
+                    onItemClick = onUserClick
+                )
+            }
+        }
         item {
             DeviceFilterDropdown(
-                filter = filter,
+                filter = details.filter,
                 onFilterSelect = onFilterSelect
             )
         }
-        items(items = devices) { device ->
+        items(items = details.devices) { device ->
             DeviceItem(device, onItemClick, onDeleteClick)
         }
     }
+}
+
+@Composable
+private fun UserDetails(
+    user: User,
+    onItemClick: () -> Unit
+) = Row(
+    modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onItemClick() }
+        .padding(16.dp),
+    verticalAlignment = Alignment.CenterVertically
+) {
+    Icon(
+        modifier = Modifier.padding(end = 8.dp),
+        imageVector = Icons.Default.AccountBox,
+        contentDescription = null
+    )
+    Text(
+        text = user.fullName
+    )
 }
 
 @Composable
@@ -191,6 +225,7 @@ private fun Loading() = Box(contentAlignment = Alignment.Center) {
 private fun HomePageScreenPreview() {
     Content(
         state = HomePageState.Content(
+            user = null,
             filter = FilterDeviceType.All,
             devices = listOf(
                 Device.Light(0, "Device 1", 0, Device.Mode.On),
@@ -200,7 +235,8 @@ private fun HomePageScreenPreview() {
         ),
         onFilterSelect = {},
         onDeviceClick = {},
-        onDeleteClick = {}
+        onDeleteClick = {},
+        onUserClick = {}
     )
 }
 

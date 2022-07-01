@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feature.device.data.DeviceRepository
 import com.example.feature.device.data.model.Device
+import com.example.feature.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomePageViewModel @Inject constructor(
-    private val deviceRepository: DeviceRepository
+    private val deviceRepository: DeviceRepository,
+    private val userRepositiry: UserRepository,
 ) : ViewModel() {
 
     private val _filter = MutableStateFlow(FilterDeviceType.All)
@@ -27,10 +29,20 @@ class HomePageViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(errorHandler) {
-            combine(_filter, deviceRepository.devices) { filter, devices ->
-                devices.filterByType(filter)
+            combine(
+                userRepositiry.user,
+                _filter,
+                deviceRepository.devices
+            ) { user, filter, devices ->
+                user to devices.filterByType(filter)
             }
-                .onEach { _homePageState.value = HomePageState.Content(_filter.value, it) }
+                .onEach {
+                    _homePageState.value = HomePageState.Content(
+                        user = it.first,
+                        filter = _filter.value,
+                        devices = it.second
+                    )
+                }
                 .launchIn(this)
         }
     }

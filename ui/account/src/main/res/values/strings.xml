@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_error_loading">Error while loading the user</string>
+    <string name="user_label_first_name">First name</string>
+    <string name="user_label_last_name">Last name</string>
+    <string name="user_label_birthday">Birthday</string>
+    <string name="user_label_address_country">Country</string>
+    <string name="user_label_address_city">City</string>
+    <string name="user_label_address_street">Street</string>
+    <string name="user_label_address_street_code">Street code</string>
+    <string name="user_label_address_postal_code">Postal code</string>
+    <string name="user_save">Save</string>
+</resources>

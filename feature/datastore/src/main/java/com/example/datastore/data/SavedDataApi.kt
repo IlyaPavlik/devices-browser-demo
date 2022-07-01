@@ -8,4 +8,6 @@ interface SavedDataApi {
     suspend fun getSavedDevices(): List<SavedDevice>
 
     suspend fun getSavedUser(): SavedUser
+
+    suspend fun saveUser(user: SavedUser)
 }

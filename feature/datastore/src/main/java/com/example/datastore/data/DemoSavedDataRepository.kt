@@ -18,6 +18,11 @@ internal class DemoSavedDataRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SavedDataApi {
 
+    private val sharedPreferences = context.getSharedPreferences(
+        SHARED_PREFERENCES_NAME,
+        Context.MODE_PRIVATE
+    )
+    private val jsonMapper = jacksonObjectMapper()
     private var demoData: DemoData? = null
 
     override suspend fun getSavedDevices(): List<SavedDevice> = withContext(Dispatchers.IO) {
@@ -25,12 +30,30 @@ internal class DemoSavedDataRepository @Inject constructor(
     }
 
     override suspend fun getSavedUser(): SavedUser = withContext(Dispatchers.IO) {
-        (demoData ?: loadDemoData()).user
+        loadUserFromPreferences() ?: (demoData ?: loadDemoData()).user
+    }
+
+    override suspend fun saveUser(user: SavedUser) {
+        val userJson = jsonMapper.writeValueAsString(user)
+        with(sharedPreferences.edit()) {
+            putString(KEY_USER, userJson)
+            apply()
+        }
     }
 
     private fun loadDemoData(): DemoData {
-        val mapper = jacksonObjectMapper()
-        return mapper.readValue<DemoData>(context.resources.openRawResource(R.raw.data))
+        return jsonMapper.readValue<DemoData>(context.resources.openRawResource(R.raw.data))
             .also { demoData = it }
+    }
+
+    private fun loadUserFromPreferences(): SavedUser? {
+        return sharedPreferences.getString(KEY_USER, null)?.let { userJson ->
+            jsonMapper.readValue(userJson)
+        }
+    }
+
+    companion object {
+        private const val SHARED_PREFERENCES_NAME = "DeviceBrowser"
+        private const val KEY_USER = "key_user"
     }
 }
