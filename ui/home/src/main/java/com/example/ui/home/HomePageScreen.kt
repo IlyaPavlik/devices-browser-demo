@@ -178,7 +178,7 @@ private fun StatusIndicator(device: Device) {
 
 @Composable
 private fun Error() = Box(contentAlignment = Alignment.Center) {
-    Text(text = stringResource(R.string.error_loading))
+    Text(text = stringResource(R.string.home_error_loading))
 }
 
 @Composable
@@ -194,7 +194,7 @@ private fun HomePageScreenPreview() {
             filter = FilterDeviceType.All,
             devices = listOf(
                 Device.Light(0, "Device 1", 0, Device.Mode.On),
-                Device.Heater(0, "Device 1", 0, Device.Mode.Off),
+                Device.Heater(0, "Device 1", 0f, Device.Mode.Off),
                 Device.RollerShutter(0, "Device 1", 0),
             )
         ),

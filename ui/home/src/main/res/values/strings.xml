@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_loading">Error while loading data</string>
+    <string name="home_error_loading">Error while loading data</string>
     <string name="intensity">Intensity: %1$d</string>
     <string name="position">Position: %1$d</string>
-    <string name="temperature">Temperature: %1$d\u00B0C</string>
+    <string name="temperature">Temperature: %1$.1f\u00B0C</string>
     <string name="filter_patter">Show: %1$s</string>
     <string name="filter_all">All</string>
     <string name="filter_light">Light</string>
     <string name="filter_roller_shutter">Roller shutter</string>
     <string name="filter_heater">Heater</string>
     <string name="delete">Delete</string>
+    <string name="details_error_loading">Cannot load device</string>
 </resources>

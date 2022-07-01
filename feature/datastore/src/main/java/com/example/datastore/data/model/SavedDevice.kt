@@ -8,7 +8,7 @@ data class SavedDevice(
     val intensity: Int?,
     val mode: Mode?,
     val position: Int?,
-    val temperature: Int?,
+    val temperature: Float?,
     val productType: Type,
 ) {
 

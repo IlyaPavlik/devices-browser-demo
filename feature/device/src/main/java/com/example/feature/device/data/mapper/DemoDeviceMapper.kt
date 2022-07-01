@@ -19,7 +19,7 @@ internal fun SavedDevice.toDevice() =
         SavedDevice.Type.Heater -> Device.Heater(
             id = id,
             deviceName = deviceName,
-            temperature = temperature ?: 0,
+            temperature = temperature ?: 0f,
             mode = mode?.toDeviceMode() ?: Device.Mode.Off
         )
     }

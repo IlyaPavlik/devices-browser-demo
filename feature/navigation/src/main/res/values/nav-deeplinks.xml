@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY nav_deeplink_host "android-app://example.google.app/">]>
 <resources>
     <string name="nav_deeplink_home">&nav_deeplink_host;home</string>
-    <string name="nav_deeplink_details">&nav_deeplink_host;details</string>
+    <string name="nav_deeplink_details">&nav_deeplink_host;details/{deviceId}</string>
     <string name="nav_deeplink_account">&nav_deeplink_host;account</string>
 </resources>

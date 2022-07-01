@@ -24,6 +24,10 @@
         android:name="com.example.ui.home.details.DeviceSteeringFragment">
 
         <deepLink app:uri="@string/nav_deeplink_details" />
+
+        <argument
+            android:name="deviceId"
+            app:argType="long" />
     </fragment>
 
     <fragment
