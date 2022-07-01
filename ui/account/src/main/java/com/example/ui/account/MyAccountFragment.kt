@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ui.account.databinding.FragmentMyAccountBinding
-import com.example.ui_core.viewbinding.viewBinding
+import com.example.uicore.viewbinding.viewBinding
 
 class MyAccountFragment : Fragment(R.layout.fragment_my_account) {
 

@@ -10,11 +10,17 @@ class UiConfigPlugin : BaseConfigPlugin() {
 
     override fun BaseExtension.android() {
         buildFeatures.viewBinding = true
+        buildFeatures.compose = true
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.1.1"
+        }
     }
 
     @Suppress("UnstableApiUsage")
     override fun DependencyHandlerScope.dependencies(libs: VersionCatalog) {
         add("implementation", libs.findDependency("androidx.appcompat").get())
         add("implementation", project(mapOf("path" to ":feature:ui-core")))
+        add("implementation", libs.findDependency("androidx.viewmodel.compose").get())
+        add("implementation", libs.findBundle("compose").get())
     }
 }

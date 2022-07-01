@@ -1,4 +1,4 @@
-package com.example.ui_core.viewbinding
+package com.example.uicore.viewbinding
 
 import android.view.LayoutInflater
 import android.view.View
