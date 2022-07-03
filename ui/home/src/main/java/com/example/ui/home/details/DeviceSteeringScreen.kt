@@ -235,7 +235,7 @@ private fun VerticalSlider(
     Slider(
         modifier = Modifier
             .graphicsLayer {
-                rotationZ = 270f
+                rotationZ = 90f
                 transformOrigin = TransformOrigin(0f, 0f)
             }
             .layout { measurable, constraints ->
@@ -248,11 +248,10 @@ private fun VerticalSlider(
                     )
                 )
                 layout(placeable.height, placeable.width) {
-                    placeable.place(-placeable.width, 0)
+                    placeable.place(0, -placeable.height)
                 }
             }
-            .width(120.dp)
-            .height(50.dp),
+            .size(120.dp, 50.dp),
         value = value,
         valueRange = valueRange,
         onValueChange = onValueChange

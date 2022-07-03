@@ -6,7 +6,6 @@ import com.example.feature.device.data.DeviceRepository
 import com.example.feature.device.data.model.Device
 import com.example.feature.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -14,40 +13,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomePageViewModel @Inject constructor(
+    userRepositiry: UserRepository,
     private val deviceRepository: DeviceRepository,
-    private val userRepositiry: UserRepository,
 ) : ViewModel() {
 
     private val _filter = MutableStateFlow(FilterDeviceType.All)
-    private val _homePageState = MutableStateFlow<HomePageState>(HomePageState.Loading)
-    val homePageState = _homePageState.asStateFlow()
-
-    private val errorHandler = CoroutineExceptionHandler { _, exception ->
-        Timber.e(exception, "Error while loading devices")
-        _homePageState.value = HomePageState.Error
-    }
-
-    init {
-        viewModelScope.launch(errorHandler) {
-            combine(
-                userRepositiry.user,
-                _filter,
-                deviceRepository.devices
-            ) { user, filter, devices ->
-                user to devices.filterByType(filter)
-            }
-                .onEach {
-                    _homePageState.value = HomePageState.Content(
-                        user = it.first,
-                        filter = _filter.value,
-                        devices = it.second
-                    )
-                }
-                .launchIn(this)
+    val homePageState: StateFlow<HomePageState> by lazy {
+        combine(
+            userRepositiry.user,
+            _filter,
+            deviceRepository.devices
+        ) { user, filter, devices ->
+            user to devices.filterByType(filter)
         }
+            .map {
+                HomePageState.Content(
+                    user = it.first,
+                    filter = _filter.value,
+                    devices = it.second
+                )
+            }
+            .catch<HomePageState> { exception ->
+                Timber.e(exception, "Error while loading data")
+                emit(HomePageState.Error)
+            }
+            .stateIn(viewModelScope, SharingStarted.Lazily, HomePageState.Loading)
     }
 
-    fun onFilterSelected(filter: FilterDeviceType) = viewModelScope.launch(errorHandler) {
+    fun onFilterSelected(filter: FilterDeviceType) = viewModelScope.launch {
         _filter.value = filter
     }
 
