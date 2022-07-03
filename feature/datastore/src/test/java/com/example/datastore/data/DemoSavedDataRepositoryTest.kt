@@ -1,9 +1,13 @@
 package com.example.datastore.data
 
-import android.content.Context
-import android.content.res.Resources
+import com.example.datastore.data.model.DemoData
+import com.example.datastore.data.model.SavedDevice
+import com.example.datastore.data.model.SavedUser
+import com.example.datastore.data.source.PreferencesDataSource
+import com.example.datastore.data.source.RawDataSource
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -11,62 +15,67 @@ import org.junit.Test
 
 internal class DemoSavedDataRepositoryTest {
 
-    private val dataString = "{\n" +
-            "  \"devices\": [\n" +
-            "    {\n" +
-            "      \"id\": 1,\n" +
-            "      \"deviceName\": \"Lampe - Cuisine\",\n" +
-            "      \"intensity\": 50,\n" +
-            "      \"mode\": \"ON\",\n" +
-            "      \"productType\": \"Light\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"id\": 2,\n" +
-            "      \"deviceName\": \"Volet roulant - Salon\",\n" +
-            "      \"position\": 70,\n" +
-            "      \"productType\": \"RollerShutter\"\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"user\": {\n" +
-            "    \"firstName\": \"John\",\n" +
-            "    \"lastName\": \"Doe\",\n" +
-            "    \"address\": {\n" +
-            "      \"city\": \"Issy-les-Moulineaux\",\n" +
-            "      \"postalCode\": 92130,\n" +
-            "      \"street\": \"rue Michelet\",\n" +
-            "      \"streetCode\": \"2B\",\n" +
-            "      \"country\": \"France\"\n" +
-            "    },\n" +
-            "    \"birthDate\": 813766371000\n" +
-            "  }\n" +
-            "}"
-
-    private val mockedResources = mockk<Resources> {
-        every { openRawResource(any()) } returns dataString.byteInputStream()
+    private val demoData = DemoData(
+        devices = listOf(
+            SavedDevice(
+                id = 0,
+                deviceName = "Heater",
+                intensity = null,
+                mode = SavedDevice.Mode.On,
+                position = null,
+                temperature = 18f,
+                productType = SavedDevice.Type.Heater
+            )
+        ),
+        user = SavedUser(
+            firstName = "First name",
+            lastName = "Second name",
+            address = SavedUser.Address(
+                city = "City",
+                postalCode = 11110,
+                street = "Street",
+                streetCode = "Street code",
+                country = "Country"
+            ),
+            birthDate = 0
+        )
+    )
+    private val rawDataSource = mockk<RawDataSource> {
+        every { getDemoData() } returns demoData
     }
-    private val mockedContext = mockk<Context> {
-        every { resources } returns mockedResources
+    private val preferencesDataSource = mockk<PreferencesDataSource> {
+        every { getUser() } returns demoData.user
+        every { saveUser(any()) } returns Unit
     }
     private lateinit var demoSavedDataRepository: DemoSavedDataRepository
 
     @Before
     fun setUp() {
-        demoSavedDataRepository = DemoSavedDataRepository(mockedContext)
+        demoSavedDataRepository = DemoSavedDataRepository(
+            rawDataSource,
+            preferencesDataSource
+        )
     }
 
     @Test
     fun correctData_ReturnsDevices() = runTest {
         val devices = demoSavedDataRepository.getSavedDevices()
-        assertEquals(devices.size, 2)
+        assertEquals(devices.size, 1)
     }
 
     @Test
     fun correctData_ReturnsUser() = runTest {
         val user = demoSavedDataRepository.getSavedUser()
 
-        assertEquals(user.firstName, "John")
-        assertEquals(user.lastName, "Doe")
-        assertEquals(user.birthDate, 813766371000)
+        assertEquals(user.firstName, demoData.user.firstName)
+        assertEquals(user.lastName, demoData.user.lastName)
+        assertEquals(user.birthDate, demoData.user.birthDate)
     }
 
+    @Test
+    fun correctData_SaveUser() = runTest {
+        demoSavedDataRepository.saveUser(demoData.user)
+
+        verify { preferencesDataSource.saveUser(demoData.user) }
+    }
 }

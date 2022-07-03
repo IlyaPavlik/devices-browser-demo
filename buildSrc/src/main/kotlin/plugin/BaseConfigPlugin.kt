@@ -58,6 +58,7 @@ abstract class BaseConfigPlugin : Plugin<Project> {
             add("testImplementation", libs.findDependency("junit").get())
             add("testImplementation", libs.findDependency("mockk").get())
             add("testImplementation", libs.findDependency("coroutines.test").get())
+            add("testImplementation", libs.findDependency("turbine").get())
 
             dependencies(libs)
         }
