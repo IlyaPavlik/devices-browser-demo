@@ -8,6 +8,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -35,7 +37,8 @@ private val DATE_FORMATTER = SimpleDateFormat("dd-MMMM-yyyy")
 
 @Composable
 internal fun MyAccountScreen(
-    viewModel: MyAccountViewModel = viewModel()
+    viewModel: MyAccountViewModel = viewModel(),
+    onBackClick: () -> Unit
 ) {
     val accountState = viewModel.accountState.collectAsState()
 
@@ -50,6 +53,7 @@ internal fun MyAccountScreen(
         onStreetCodeChange = viewModel::onStreetCodeChange,
         onPostalCodeChange = viewModel::onPostalCodeChange,
         onSaveClick = viewModel::onSaveClick,
+        onBackClick = onBackClick
     )
 }
 
@@ -64,26 +68,59 @@ private fun Content(
     onStreetChange: (String) -> Unit,
     onStreetCodeChange: (String) -> Unit,
     onPostalCodeChange: (String) -> Unit,
-    onSaveClick: () -> Unit
+    onSaveClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     DeviceBrowserTheme {
-        when (accountState) {
-            is MyAccountState.Content -> UserInfo(
-                accountState.user,
-                onFirstNameChange = onFirstNameChange,
-                onLastNameChange = onLastNameChange,
-                onBirthdayChange = onBirthdayChange,
-                onCountryChange = onCountryChange,
-                onCityChange = onCityChange,
-                onStreetChange = onStreetChange,
-                onStreetCodeChange = onStreetCodeChange,
-                onPostalCodeChange = onPostalCodeChange,
-                onSaveClick = onSaveClick
-            )
-            is MyAccountState.Error -> Error()
-            is MyAccountState.Loading -> Loading()
+        Scaffold(
+            topBar = {
+                TopBar(
+                    accountState = accountState,
+                    onBackClick = onBackClick
+                )
+            }
+        ) {
+            when (accountState) {
+                is MyAccountState.Content -> UserInfo(
+                    accountState.user,
+                    onFirstNameChange = onFirstNameChange,
+                    onLastNameChange = onLastNameChange,
+                    onBirthdayChange = onBirthdayChange,
+                    onCountryChange = onCountryChange,
+                    onCityChange = onCityChange,
+                    onStreetChange = onStreetChange,
+                    onStreetCodeChange = onStreetCodeChange,
+                    onPostalCodeChange = onPostalCodeChange,
+                    onSaveClick = onSaveClick
+                )
+                is MyAccountState.Error -> Error()
+                is MyAccountState.Loading -> Loading()
+            }
         }
     }
+}
+
+@Composable
+private fun TopBar(
+    accountState: MyAccountState,
+    onBackClick: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = when (accountState) {
+                    is MyAccountState.Content -> accountState.user.fullName
+                    is MyAccountState.Error -> stringResource(R.string.account_title_error)
+                    is MyAccountState.Loading -> stringResource(R.string.account_title_loading)
+                }
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+            }
+        }
+    )
 }
 
 @Composable
@@ -176,7 +213,9 @@ private fun UserInfo(
     }
 
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         onClick = onSaveClick
     ) {
         Text(stringResource(R.string.user_save))
@@ -198,7 +237,8 @@ private fun AccountTextField(
     singleLine = true,
     enabled = enabled,
     colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = Color.Transparent
+        backgroundColor = Color.Transparent,
+        disabledTextColor = LocalContentColor.current
     ),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = keyboardType

@@ -23,7 +23,7 @@ class MyAccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = ComposeView(requireContext()).apply {
-        setContent { MyAccountScreen() }
+        setContent { MyAccountScreen(onBackClick = { findNavController().popBackStack() }) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

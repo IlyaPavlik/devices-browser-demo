@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -50,17 +51,27 @@ private fun Content(
     onUserClick: () -> Unit,
 ) {
     DeviceBrowserTheme {
-        when (state) {
-            is HomePageState.Content ->
-                ContentDetails(
-                    details = state,
-                    onFilterSelect = onFilterSelect,
-                    onItemClick = onDeviceClick,
-                    onDeleteClick = onDeleteClick,
-                    onUserClick = onUserClick
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = stringResource(R.string.home_title))
+                    }
                 )
-            is HomePageState.Error -> Error()
-            is HomePageState.Loading -> Loading()
+            }
+        ) {
+            when (state) {
+                is HomePageState.Content ->
+                    ContentDetails(
+                        details = state,
+                        onFilterSelect = onFilterSelect,
+                        onItemClick = onDeviceClick,
+                        onDeleteClick = onDeleteClick,
+                        onUserClick = onUserClick
+                    )
+                is HomePageState.Error -> Error()
+                is HomePageState.Loading -> Loading()
+            }
         }
     }
 }
@@ -122,13 +133,16 @@ private fun DeviceFilterDropdown(
 ) = Box {
     var expanded by remember { mutableStateOf(false) }
 
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = true }
-            .padding(16.dp),
-        text = stringResource(R.string.filter_patter, stringResource(filter.resId))
-    )
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { expanded = true }
+        .padding(16.dp)) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(R.string.filter_patter, stringResource(filter.resId))
+        )
+        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+    }
 
     DropdownMenu(
         modifier = Modifier.fillMaxWidth(),

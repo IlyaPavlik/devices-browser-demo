@@ -10,4 +10,6 @@
     <string name="user_label_address_street_code">Street code</string>
     <string name="user_label_address_postal_code">Postal code</string>
     <string name="user_save">Save</string>
+    <string name="account_title_loading">Loading</string>
+    <string name="account_title_error">Error</string>
 </resources>

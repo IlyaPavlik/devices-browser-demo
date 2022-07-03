@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_title">Device browser</string>
     <string name="home_error_loading">Error while loading data</string>
     <string name="intensity">Intensity: %1$d</string>
     <string name="position">Position: %1$d</string>
@@ -10,5 +11,7 @@
     <string name="filter_roller_shutter">Roller shutter</string>
     <string name="filter_heater">Heater</string>
     <string name="delete">Delete</string>
+    <string name="details_title_loading">Loading</string>
+    <string name="details_title_error">Error</string>
     <string name="details_error_loading">Cannot load device</string>
 </resources>

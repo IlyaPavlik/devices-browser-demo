@@ -3,10 +3,9 @@ package com.example.ui.home.details
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.Slider
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -26,14 +25,16 @@ import com.example.uicore.compose.DeviceBrowserTheme
 
 @Composable
 internal fun DeviceSteeringScreen(
-    viewModel: DeviceSteeringViewModel = viewModel()
+    viewModel: DeviceSteeringViewModel = viewModel(),
+    onBackClick: () -> Unit
 ) {
     val deviceState = viewModel.deviceState.collectAsState()
 
     Content(
         deviceState = deviceState.value,
         onToggleClick = viewModel::onToggleClick,
-        onSliderChange = viewModel::onSliderChange
+        onSliderChange = viewModel::onSliderChange,
+        onBackClick = onBackClick
     )
 }
 
@@ -41,19 +42,52 @@ internal fun DeviceSteeringScreen(
 private fun Content(
     deviceState: DeviceSteeringState,
     onToggleClick: () -> Unit,
-    onSliderChange: (Float) -> Unit
+    onSliderChange: (Float) -> Unit,
+    onBackClick: () -> Unit
 ) {
     DeviceBrowserTheme {
-        when (deviceState) {
-            is DeviceSteeringState.Content -> DeviceDetails(
-                device = deviceState.device,
-                onToggleClick = onToggleClick,
-                onSliderChange = onSliderChange
-            )
-            is DeviceSteeringState.Error -> Error()
-            is DeviceSteeringState.Loading -> Loading()
+        Scaffold(
+            topBar = {
+                TopBar(
+                    deviceState = deviceState,
+                    onBackClick = onBackClick
+                )
+            }
+        ) {
+            when (deviceState) {
+                is DeviceSteeringState.Content -> DeviceDetails(
+                    device = deviceState.device,
+                    onToggleClick = onToggleClick,
+                    onSliderChange = onSliderChange
+                )
+                is DeviceSteeringState.Error -> Error()
+                is DeviceSteeringState.Loading -> Loading()
+            }
         }
     }
+}
+
+@Composable
+private fun TopBar(
+    deviceState: DeviceSteeringState,
+    onBackClick: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = when (deviceState) {
+                    is DeviceSteeringState.Content -> deviceState.device.deviceName
+                    is DeviceSteeringState.Error -> stringResource(R.string.details_title_error)
+                    is DeviceSteeringState.Loading -> stringResource(R.string.details_title_loading)
+                }
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+            }
+        }
+    )
 }
 
 @Composable
