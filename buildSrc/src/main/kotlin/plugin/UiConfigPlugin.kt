@@ -9,7 +9,6 @@ class UiConfigPlugin : BaseConfigPlugin() {
     override val pluginType: PluginType = PluginType.LIBRARY
 
     override fun BaseExtension.android() {
-        buildFeatures.viewBinding = true
         buildFeatures.compose = true
         composeOptions {
             kotlinCompilerExtensionVersion = "1.1.1"

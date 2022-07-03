@@ -1,6 +1,6 @@
 package plugin
 
-import Versions
+import AppConfig
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -30,10 +30,10 @@ abstract class BaseConfigPlugin : Plugin<Project> {
         }
 
         target.extensions.getByType<BaseExtension>().run {
-            compileSdkVersion(Versions.compileSdkVersion)
+            compileSdkVersion(AppConfig.compileSdkVersion)
             defaultConfig {
-                targetSdk = Versions.targetSdkVersion
-                minSdk = Versions.minSdkVersion
+                targetSdk = AppConfig.targetSdkVersion
+                minSdk = AppConfig.minSdkVersion
 
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }

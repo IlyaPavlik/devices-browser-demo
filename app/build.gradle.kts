@@ -4,9 +4,9 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "com.example.devicebrowser"
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = AppConfig.applicationId
+        versionCode = AppConfig.versionCode
+        versionName = AppConfig.versionName
     }
 
     buildTypes {
