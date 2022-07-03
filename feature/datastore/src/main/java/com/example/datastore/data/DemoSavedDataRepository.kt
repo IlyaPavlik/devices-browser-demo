@@ -1,13 +1,10 @@
 package com.example.datastore.data
 
-import android.content.Context
-import com.example.datastore.R
 import com.example.datastore.data.model.DemoData
 import com.example.datastore.data.model.SavedDevice
 import com.example.datastore.data.model.SavedUser
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.example.datastore.data.source.PreferencesDataSource
+import com.example.datastore.data.source.RawDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -16,14 +13,10 @@ import javax.inject.Singleton
 
 @Singleton
 internal class DemoSavedDataRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val rawDataSource: RawDataSource,
+    private val preferencesDataSource: PreferencesDataSource
 ) : SavedDataApi {
 
-    private val sharedPreferences = context.getSharedPreferences(
-        SHARED_PREFERENCES_NAME,
-        Context.MODE_PRIVATE
-    )
-    private val jsonMapper = jacksonObjectMapper()
     private var demoData: DemoData? = null
 
     override suspend fun getSavedDevices(): List<SavedDevice> = withContext(Dispatchers.IO) {
@@ -31,32 +24,19 @@ internal class DemoSavedDataRepository @Inject constructor(
     }
 
     override suspend fun getSavedUser(): SavedUser = withContext(Dispatchers.IO) {
-        loadUserFromPreferences() ?: (demoData ?: loadDemoData()).user
+        preferencesDataSource.getUser() ?: (demoData ?: loadDemoData()).user
     }
 
-    override suspend fun saveUser(user: SavedUser) {
-        val userJson = jsonMapper.writeValueAsString(user)
-        with(sharedPreferences.edit()) {
-            putString(KEY_USER, userJson)
-            apply()
-        }
+    override suspend fun saveUser(user: SavedUser) = withContext(Dispatchers.IO) {
+        preferencesDataSource.saveUser(user)
     }
 
     private suspend fun loadDemoData(): DemoData {
         delay(ARTIFICIAL_DELAY) // artificial delay to show loader
-        return jsonMapper.readValue<DemoData>(context.resources.openRawResource(R.raw.data))
-            .also { demoData = it }
-    }
-
-    private fun loadUserFromPreferences(): SavedUser? {
-        return sharedPreferences.getString(KEY_USER, null)?.let { userJson ->
-            jsonMapper.readValue(userJson)
-        }
+        return rawDataSource.getDemoData()
     }
 
     companion object {
-        private const val SHARED_PREFERENCES_NAME = "DeviceBrowser"
-        private const val KEY_USER = "key_user"
         private const val ARTIFICIAL_DELAY = 2000L
     }
 }
