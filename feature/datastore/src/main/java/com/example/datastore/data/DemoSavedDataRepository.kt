@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -41,7 +42,8 @@ internal class DemoSavedDataRepository @Inject constructor(
         }
     }
 
-    private fun loadDemoData(): DemoData {
+    private suspend fun loadDemoData(): DemoData {
+        delay(ARTIFICIAL_DELAY) // artificial delay to show loader
         return jsonMapper.readValue<DemoData>(context.resources.openRawResource(R.raw.data))
             .also { demoData = it }
     }
@@ -55,5 +57,6 @@ internal class DemoSavedDataRepository @Inject constructor(
     companion object {
         private const val SHARED_PREFERENCES_NAME = "DeviceBrowser"
         private const val KEY_USER = "key_user"
+        private const val ARTIFICIAL_DELAY = 2000L
     }
 }

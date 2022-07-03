@@ -28,6 +28,16 @@ class MyAccountViewModel @Inject constructor(
         _accountState.value = MyAccountState.Error
     }
 
+    init {
+        viewModelScope.launch(errorHandler) {
+            userRepository.user
+                .onEach { user ->
+                    user?.let { _accountState.value = MyAccountState.Content(it) }
+                }
+                .launchIn(this)
+        }
+    }
+
     fun onFirstNameChange(value: String) {
         _accountState.applyUserChanges { it.copy(firstName = value) }
     }
@@ -76,14 +86,4 @@ class MyAccountViewModel @Inject constructor(
 
     private fun StateFlow<MyAccountState>.getUser(): User? =
         (value as? MyAccountState.Content)?.user
-
-    init {
-        viewModelScope.launch(errorHandler) {
-            userRepository.user
-                .onEach { user ->
-                    user?.let { _accountState.value = MyAccountState.Content(it) }
-                }
-                .launchIn(this)
-        }
-    }
 }

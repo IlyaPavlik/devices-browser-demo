@@ -211,12 +211,18 @@ private fun HeaterDeviceScreen(
 }
 
 @Composable
-private fun Error() = Box(contentAlignment = Alignment.Center) {
+private fun Error() = Box(
+    modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center
+) {
     Text(text = stringResource(R.string.details_error_loading))
 }
 
 @Composable
-private fun Loading() = Box(contentAlignment = Alignment.Center) {
+private fun Loading() = Box(
+    modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center
+) {
     CircularProgressIndicator()
 }
 
