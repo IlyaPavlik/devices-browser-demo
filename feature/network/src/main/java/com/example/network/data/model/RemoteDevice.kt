@@ -1,8 +1,8 @@
-package com.example.datastore.data.model
+package com.example.network.data.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class SavedDevice(
+data class RemoteDevice(
     val id: Long,
     val deviceName: String,
     val intensity: Int?,

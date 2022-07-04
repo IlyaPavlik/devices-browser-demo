@@ -1,8 +1,8 @@
 package com.example.feature.device.data
 
-import com.example.datastore.data.SavedDataApi
 import com.example.feature.device.data.mapper.toDevice
 import com.example.feature.device.data.model.Device
+import com.example.network.data.RemoteDataApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DeviceRepository @Inject constructor(
-    private val savedDataApi: SavedDataApi
+    private val remoteDataApi: RemoteDataApi
 ) {
 
     private val _devices = MutableStateFlow<Map<Long, Device>>(mutableMapOf())
@@ -34,7 +34,7 @@ class DeviceRepository @Inject constructor(
     }
 
     private suspend fun loadSavedDevices() {
-        savedDataApi.getSavedDevices().map { it.toDevice() }
+        remoteDataApi.getSavedDevices().map { it.toDevice() }
             .also { devices -> _devices.value = devices.associateBy { it.id } }
     }
 }

@@ -4,6 +4,7 @@ import com.example.datastore.data.SavedDataApi
 import com.example.feature.user.mapper.toSavedUser
 import com.example.feature.user.mapper.toUser
 import com.example.feature.user.model.User
+import com.example.network.data.RemoteDataApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val savedDataApi: SavedDataApi
+    private val savedDataApi: SavedDataApi,
+    private val remoteDataApi: RemoteDataApi
 ) {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -23,7 +25,7 @@ class UserRepository @Inject constructor(
     }
 
     private suspend fun loadSavedUser() {
-        savedDataApi.getSavedUser().toUser()
+        (savedDataApi.getSavedUser()?.toUser() ?: remoteDataApi.getSavedUser().toUser())
             .also { user -> _user.value = user }
     }
 }

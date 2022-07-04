@@ -1,22 +1,22 @@
 package com.example.feature.device.data.mapper
 
-import com.example.datastore.data.model.SavedDevice
 import com.example.feature.device.data.model.Device
+import com.example.network.data.model.RemoteDevice
 
-internal fun SavedDevice.toDevice() =
+internal fun RemoteDevice.toDevice() =
     when (productType) {
-        SavedDevice.Type.Light -> Device.Light(
+        RemoteDevice.Type.Light -> Device.Light(
             id = id,
             deviceName = deviceName,
             intensity = intensity ?: 0,
             mode = mode?.toDeviceMode() ?: Device.Mode.Off
         )
-        SavedDevice.Type.RollerShutter -> Device.RollerShutter(
+        RemoteDevice.Type.RollerShutter -> Device.RollerShutter(
             id = id,
             deviceName = deviceName,
             position = position ?: 0
         )
-        SavedDevice.Type.Heater -> Device.Heater(
+        RemoteDevice.Type.Heater -> Device.Heater(
             id = id,
             deviceName = deviceName,
             temperature = temperature ?: 0f,
@@ -24,7 +24,7 @@ internal fun SavedDevice.toDevice() =
         )
     }
 
-private fun SavedDevice.Mode.toDeviceMode() = when (this) {
-    SavedDevice.Mode.On -> Device.Mode.On
-    SavedDevice.Mode.Off -> Device.Mode.Off
+private fun RemoteDevice.Mode.toDeviceMode() = when (this) {
+    RemoteDevice.Mode.On -> Device.Mode.On
+    RemoteDevice.Mode.Off -> Device.Mode.Off
 }

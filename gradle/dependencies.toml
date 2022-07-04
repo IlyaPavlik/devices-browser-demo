@@ -6,6 +6,7 @@ navigation = "2.4.2"
 compose = "1.1.1"
 lifecycle = "2.5.0"
 junit = "4.13.2"
+retrofit = "2.9.0"
 
 [libraries]
 androidx-core = "androidx.core:core-ktx:1.8.0"
@@ -26,6 +27,9 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 jackson = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit" }
 
 timber = "com.jakewharton.timber:timber:5.0.1"
 
