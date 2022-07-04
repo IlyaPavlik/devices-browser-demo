@@ -1,5 +1,5 @@
 plugins {
-    id("ui-config-plugin")
+    androidUi
 }
 
 dependencies {

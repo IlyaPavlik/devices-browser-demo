@@ -1,14 +1,8 @@
 plugins {
-    id("app-config-plugin")
+    androidApplication
 }
 
 android {
-    defaultConfig {
-        applicationId = AppConfig.applicationId
-        versionCode = AppConfig.versionCode
-        versionName = AppConfig.versionName
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -17,10 +11,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    hilt {
-        enableAggregatingTask = true
     }
 }
 

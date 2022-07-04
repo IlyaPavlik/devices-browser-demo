@@ -1,5 +1,5 @@
 plugins {
-    id("lib-config-plugin")
+    androidLibrary
 }
 
 android {
