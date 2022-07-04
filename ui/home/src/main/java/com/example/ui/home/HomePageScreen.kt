@@ -19,11 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feature.device.data.model.Device
 import com.example.feature.user.model.User
 import com.example.uicore.compose.DeviceBrowserTheme
+
+private val DeviceIndicatorSize = 8.dp
 
 @Composable
 internal fun HomePageScreen(
@@ -113,11 +114,11 @@ private fun UserDetails(
     modifier = Modifier
         .fillMaxWidth()
         .clickable { onItemClick() }
-        .padding(16.dp),
+        .padding(DeviceBrowserTheme.dimensions.intendMedium),
     verticalAlignment = Alignment.CenterVertically
 ) {
     Icon(
-        modifier = Modifier.padding(end = 8.dp),
+        modifier = Modifier.padding(end = DeviceBrowserTheme.dimensions.intendSmall),
         imageVector = Icons.Default.AccountBox,
         contentDescription = null
     )
@@ -136,7 +137,7 @@ private fun DeviceFilterDropdown(
     Row(modifier = Modifier
         .fillMaxWidth()
         .clickable { expanded = true }
-        .padding(16.dp)) {
+        .padding(DeviceBrowserTheme.dimensions.intendMedium)) {
         Text(
             modifier = Modifier.weight(1f),
             text = stringResource(R.string.filter_patter, stringResource(filter.resId))
@@ -175,27 +176,27 @@ private fun DeviceItem(
     modifier = Modifier
         .fillMaxWidth()
         .clickable { onItemClick(device) }
-        .padding(16.dp),
+        .padding(DeviceBrowserTheme.dimensions.intendMedium),
     verticalAlignment = Alignment.CenterVertically
 ) {
     Column(modifier = Modifier.weight(1f)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = device.deviceName,
-                fontSize = 16.sp
+                style = DeviceBrowserTheme.typography.body1
             )
             StatusIndicator(device)
         }
 
         Text(
             text = device.getDetails(),
-            fontSize = 14.sp
+            style = DeviceBrowserTheme.typography.body2
         )
     }
 
     Icon(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(DeviceBrowserTheme.dimensions.intendSmall)
             .clickable { onDeleteClick(device) },
         imageVector = Icons.Default.Delete,
         contentDescription = stringResource(R.string.delete)
@@ -216,8 +217,8 @@ private fun StatusIndicator(device: Device) {
         }
         Box(
             modifier = Modifier
-                .padding(start = 8.dp)
-                .size(8.dp)
+                .padding(start = DeviceBrowserTheme.dimensions.intendSmall)
+                .size(DeviceIndicatorSize)
                 .clip(CircleShape)
                 .background(color)
         )

@@ -2,9 +2,11 @@ package com.example.uicore.compose
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 
 @Composable
 fun DeviceBrowserTheme(content: @Composable () -> Unit) {
@@ -19,3 +21,17 @@ fun DeviceBrowserTheme(content: @Composable () -> Unit) {
 private val LightColors = lightColors()
 
 private val DarkColors = darkColors()
+
+object DeviceBrowserTheme {
+
+    val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = MaterialTheme.typography
+
+    val dimensions: Dimensions
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalDimensions.current
+
+}

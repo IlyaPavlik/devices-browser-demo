@@ -17,11 +17,15 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feature.device.data.model.Device
 import com.example.ui.home.R
 import com.example.uicore.compose.DeviceBrowserTheme
+
+private val DeviceIconSize = 200.dp
+private val RollerShutterSliderSize = DpSize(120.dp, 50.dp)
 
 @Composable
 internal fun DeviceSteeringScreen(
@@ -95,7 +99,7 @@ private fun DeviceDetails(
     device: Device,
     onToggleClick: () -> Unit,
     onSliderChange: (Float) -> Unit
-) {
+) = Box(modifier = Modifier.padding(DeviceBrowserTheme.dimensions.intendMedium)) {
     when (device) {
         is Device.Heater -> HeaterDeviceScreen(
             heaterDevice = device,
@@ -123,7 +127,7 @@ private fun LightDeviceScreen(
     val interactionSource = remember { MutableInteractionSource() }
     Icon(
         modifier = Modifier
-            .size(200.dp)
+            .size(DeviceIconSize)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -186,7 +190,7 @@ private fun HeaterDeviceScreen(
     val interactionSource = remember { MutableInteractionSource() }
     Icon(
         modifier = Modifier
-            .size(200.dp)
+            .size(DeviceIconSize)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -251,7 +255,7 @@ private fun VerticalSlider(
                     placeable.place(0, -placeable.height)
                 }
             }
-            .size(120.dp, 50.dp),
+            .size(RollerShutterSliderSize),
         value = value,
         valueRange = valueRange,
         onValueChange = onValueChange

@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.feature.user.model.User
@@ -138,7 +137,7 @@ private fun UserInfo(
 ) = Column(
     modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)
+        .padding(DeviceBrowserTheme.dimensions.intendMedium)
 ) {
 
     val fragmentManager = rememberFragmentManager()
@@ -165,7 +164,7 @@ private fun UserInfo(
     AccountTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
+            .padding(vertical = DeviceBrowserTheme.dimensions.intendMedium)
             .clickable {
                 datePicker.show(fragmentManager, null)
             },
@@ -215,7 +214,7 @@ private fun UserInfo(
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = DeviceBrowserTheme.dimensions.intendMedium),
         onClick = onSaveClick
     ) {
         Text(stringResource(R.string.user_save))
