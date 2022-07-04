@@ -1,5 +1,6 @@
 package com.example.ui.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -77,6 +78,7 @@ private fun Content(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ContentDetails(
     details: HomePageState.Content,
@@ -100,8 +102,13 @@ private fun ContentDetails(
                 onFilterSelect = onFilterSelect
             )
         }
-        items(items = details.devices) { device ->
-            DeviceItem(device, onItemClick, onDeleteClick)
+        items(items = details.devices, key = { it.id }) { device ->
+            DeviceItem(
+                modifier = Modifier.animateItemPlacement(),
+                device = device,
+                onItemClick = onItemClick,
+                onDeleteClick = onDeleteClick
+            )
         }
     }
 }
@@ -169,11 +176,12 @@ private fun DeviceFilterDropdown(
 
 @Composable
 private fun DeviceItem(
+    modifier: Modifier,
     device: Device,
     onItemClick: (Device) -> Unit,
     onDeleteClick: (Device) -> Unit
 ) = Row(
-    modifier = Modifier
+    modifier = modifier
         .fillMaxWidth()
         .clickable { onItemClick(device) }
         .padding(DeviceBrowserTheme.dimensions.intendMedium),

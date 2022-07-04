@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -240,6 +241,7 @@ private fun AccountTextField(
         disabledTextColor = LocalContentColor.current
     ),
     keyboardOptions = KeyboardOptions.Default.copy(
+        capitalization = KeyboardCapitalization.Words,
         keyboardType = keyboardType
     ),
     onValueChange = onValueChange
