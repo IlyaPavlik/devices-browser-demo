@@ -6,9 +6,11 @@ information.
 ## Architecture
 
 The architecture is based on Google recommended
-architecture (`UI layer -> Domain layer(Optional) ->Data layer`).
+architecture (`[UI layer]->[Domain layer(Optional)]->[Data layer]`).
 
-<img src="assets/arch-google.png" align="center"/>
+<p align="center">
+  <img src="assets/arch-google.png" width="300"/>
+</p>
 
 Modules are separated to 2 main types: `ui` (screens) and `feature` (general and business logic).
 
