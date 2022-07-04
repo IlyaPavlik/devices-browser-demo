@@ -14,6 +14,10 @@ architecture (`[UI layer]->[Domain layer(Optional)]->[Data layer]`).
 
 Modules are separated to 2 main types: `ui` (screens) and `feature` (general and business logic).
 
+<p align="center">
+  <img src="assets/arch-app.png" width="500"/>
+</p>
+
 ui:
 
 - account - includes screen where you can look at account info (`MyAccountFragment`)
