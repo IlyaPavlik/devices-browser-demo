@@ -23,6 +23,7 @@ ui:
 feature:
 
 - datastore - includes a storing logic
+- network - includes a logic related to working with server.
 - device - includes logic for device management
 - navigation - includes constants for navigation
 - ui-code - includes general logic for UI
@@ -40,6 +41,7 @@ feature:
   pattern.
 - [Navigation component](https://developer.android.com/guide/navigation) - library for navigation.
 - [Compose](https://developer.android.com/jetpack/compose) - modern toolkit for building native UI.
+- [Retrofit](https://square.github.io/retrofit/) - the library provides a powerful framework interacting with APIs.
 - [Jackson](https://github.com/FasterXML/jackson-module-kotlin) - JSON parser.
 - [Timber](https://github.com/JakeWharton/timber) - logger.
 - [JUnit4](https://junit.org/junit4/) - unit testing framework.
